@@ -1,16 +1,41 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: wagtail
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d wagtail"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
   django:
     build:
       context: .
       target: django
     entrypoint: ["/app/bin/django-entrypoint.sh"]
-    networks:
-      - maw-django-network
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
 
   celery:
     build:
       context: .
       target: django
+    # env_file:
+    #   - .env
     command:
       - celery
       - '-A'
@@ -21,15 +46,17 @@ services:
       - '--without-gossip'
       - '--without-mingle'
       - '--without-heartbeat'
-    networks:
-      - maw-django-network
     depends_on:
       - django
+      - postgres
+      - redis
 
   celery_beat:
     build:
       context: .
       target: django
+    # env_file:
+    #   - .env
     command:
       - celery
       - '-A'
@@ -39,21 +66,22 @@ services:
       - INFO
       - '--scheduler'
       - 'django_celery_beat.schedulers:DatabaseScheduler'
-    networks:
-      - maw-django-network
     depends_on:
       - django
+      - postgres
+      - redis
 
   nginx:
     build:
       context: .
       target: nginx
-    networks:
-      - maw-django-network
+    ports:
+      - 80:80
+    # env_file:
+    #   - .env
     depends_on:
       - django
 
-networks:
-  maw-django-network:
-    name: coolify
-    external: true
+volumes:
+  postgres_data:
+  redis_data:
