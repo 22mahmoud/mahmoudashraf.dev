@@ -20,9 +20,7 @@ services:
       - redis_data:/data
 
   django:
-    build:
-      context: .
-      target: django
+    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
     entrypoint: ["/app/bin/django-entrypoint.sh"]
     env_file:
       - .env
@@ -31,9 +29,7 @@ services:
       - redis
 
   celery:
-    build:
-      context: .
-      target: django
+    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
     # env_file:
     #   - .env
     command:
@@ -52,9 +48,7 @@ services:
       - redis
 
   celery_beat:
-    build:
-      context: .
-      target: django
+    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
     # env_file:
     #   - .env
     command:
@@ -75,8 +69,8 @@ services:
     build:
       context: .
       target: nginx
-    ports:
-      - 80:80
+    # ports:
+    #   - 80:80
     # env_file:
     #   - .env
     depends_on:

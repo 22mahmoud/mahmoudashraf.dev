@@ -36,7 +36,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY --from=frontend /app/static /app/static
 
-RUN uv run python manage.py collectstatic --noinput --clear --verbosity 2
+ENV DJANGO_SETTINGS_MODULE=config.django.prod
+
+RUN SECRET_KEY=build-only-secret uv run python manage.py collectstatic --noinput --clear --verbosity 2
 
 FROM debian:bookworm-slim AS django
 
@@ -62,6 +64,7 @@ COPY --from=frontend-prod-deps --chown=app:app /app/node_modules /app/node_modul
 USER app
 
 ENV PATH="/app/.venv/bin:$PATH"
+ENV DJANGO_SETTINGS_MODULE=config.django.prod
 
 EXPOSE 8000
 
