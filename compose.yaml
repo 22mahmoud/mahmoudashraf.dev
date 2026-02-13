@@ -12,13 +12,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d wagtail"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: valkey/valkey:9.0.2-alpine
+    env_file:
+      - .env
     networks:
       - internal
     command: ["valkey-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
