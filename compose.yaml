@@ -1,6 +1,8 @@
 services:
   postgres:
     image: postgres:16-alpine
+    networks:
+      - internal
     environment:
       POSTGRES_DB: wagtail
       POSTGRES_USER: postgres
@@ -15,12 +17,16 @@ services:
 
   redis:
     image: redis:7-alpine
+    networks:
+      - internal
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
 
   django:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
+    networks:
+      - internal
     entrypoint: ["/bin/sh", "/app/bin/django-entrypoint.sh"]
     env_file:
       - .env
@@ -30,6 +36,8 @@ services:
 
   celery:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
+    networks:
+      - internal
     env_file:
       - .env
     command:
@@ -49,6 +57,8 @@ services:
 
   celery_beat:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
+    networks:
+      - internal
     env_file:
       - .env
     command:
@@ -67,10 +77,22 @@ services:
 
   nginx:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:latest
+    networks:
+      - caddy
+      - internal
     env_file:
       - .env
+    labels:
+      caddy: mahmoudashraf.dev
+      caddy.reverse_proxy: "{{upstreams 80}}"
     depends_on:
       - django
+
+networks:
+  internal:
+    driver: bridge
+  caddy:
+    external: true
 
 volumes:
   postgres_data:
