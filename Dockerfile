@@ -60,6 +60,7 @@ COPY --from=frontend-prod-deps /usr/local/lib/node_modules /usr/local/lib/node_m
 COPY --from=builder --chown=app:app /python /python
 COPY --from=builder --chown=app:app /app /app
 COPY --from=frontend-prod-deps --chown=app:app /app/node_modules /app/node_modules
+RUN chmod +x /app/bin/django-entrypoint.sh
 
 USER app
 

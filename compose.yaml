@@ -1,35 +1,35 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: wagtail
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d wagtail"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_DB: wagtail
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d wagtail"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
-  redis:
-    image: redis:7-alpine
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis_data:/data
+  # redis:
+  #   image: redis:7-alpine
+  #   command: ["redis-server", "--appendonly", "yes"]
+  #   volumes:
+  #     - redis_data:/data
 
   django:
-    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
-    entrypoint: ["/app/bin/django-entrypoint.sh"]
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-      - redis
+    image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
+    entrypoint: ["/bin/sh", "/app/bin/django-entrypoint.sh"]
+    # env_file:
+    #   - .env
+    # depends_on:
+    #   - postgres
+    #   - redis
 
   celery:
-    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
+    image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
     # env_file:
     #   - .env
     command:
@@ -44,11 +44,11 @@ services:
       - '--without-heartbeat'
     depends_on:
       - django
-      - postgres
-      - redis
+      # - postgres
+      # - redis
 
   celery_beat:
-    image: ${APP_IMAGE:-ghcr.io/22mahmoud/mahmoudashraf.dev:latest}
+    image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
     # env_file:
     #   - .env
     command:
@@ -62,13 +62,11 @@ services:
       - 'django_celery_beat.schedulers:DatabaseScheduler'
     depends_on:
       - django
-      - postgres
-      - redis
+      # - postgres
+      # - redis
 
   nginx:
-    build:
-      context: .
-      target: nginx
+    image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:latest
     # ports:
     #   - 80:80
     # env_file:
@@ -76,6 +74,6 @@ services:
     depends_on:
       - django
 
-volumes:
-  postgres_data:
-  redis_data:
+# volumes:
+#   postgres_data:
+#   redis_data:
