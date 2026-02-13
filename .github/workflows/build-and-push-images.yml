@@ -3,7 +3,7 @@ name: Build and Push App Images
 on:
   push:
     branches:
-      - main
+      - master
     tags:
       - "v*"
   pull_request:
@@ -37,8 +37,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker metadata
-        id: meta
+      - name: Docker metadata (django)
+        id: meta_django
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ steps.vars.outputs.repo }}
@@ -48,13 +48,35 @@ jobs:
             type=sha,prefix=sha-
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push app image
+      - name: Docker metadata (nginx)
+        id: meta_nginx
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ steps.vars.outputs.repo }}-nginx
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha,prefix=sha-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push django image
         uses: docker/build-push-action@v6
         with:
           context: .
           target: django
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=app
-          cache-to: type=gha,mode=max,scope=app
+          tags: ${{ steps.meta_django.outputs.tags }}
+          labels: ${{ steps.meta_django.outputs.labels }}
+          cache-from: type=gha,scope=django
+          cache-to: type=gha,mode=max,scope=django
+
+      - name: Build and push nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: nginx
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta_nginx.outputs.tags }}
+          labels: ${{ steps.meta_nginx.outputs.labels }}
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,mode=max,scope=nginx
