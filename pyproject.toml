@@ -46,6 +46,7 @@ dev = [
   "debugpy>=1.8.16",
   "django-stubs-ext>=5.2.0",
   "django-types>=0.21.0",
+  "djlint>=1.36.4",
   "honcho>=2.0.0",
   "pre-commit>=4.2.0",
   "ruff>=0.12.0",

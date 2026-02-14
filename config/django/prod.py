@@ -90,7 +90,11 @@ CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/admin/", "/cms/"],
     "DIRECTIVES": {
         "default-src": [NONE],
-        "script-src": [SELF, NONCE],
+        "script-src": [
+            SELF,
+            NONCE,
+            "https://stats.mahmoudashraf.dev",
+        ],
         "style-src": [SELF, UNSAFE_INLINE],
         "font-src": [SELF],
         "img-src": [
@@ -106,7 +110,10 @@ CONTENT_SECURITY_POLICY = {
             SELF,
             "https://static.mahmoudashraf.dev",
         ],
-        "connect-src": [SELF],
+        "connect-src": [
+            SELF,
+            "https://stats.mahmoudashraf.dev",
+        ],
         "manifest-src": [SELF],
         "object-src": [NONE],
         "frame-ancestors": [SELF],
