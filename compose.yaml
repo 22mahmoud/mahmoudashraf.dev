@@ -48,9 +48,9 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "manage.py", "health_check", "health_check-container", "localhost:8000"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/container/health/ || exit 1"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
       start_period: 30s
 
@@ -79,12 +79,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "celery -A src.tasks inspect ping --timeout 10"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
-      start_period: 30s
 
   celerybeat:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest

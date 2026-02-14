@@ -16,7 +16,12 @@ urlpatterns = debug_toolbar_urls() + [
     path(r"ht/", include("health_check.urls")),
     path(
         "container/health/",
-        HealthCheckView.as_view(checks=["health_check.Disk", "health_check.Memory"]),
+        HealthCheckView.as_view(
+            checks=[
+                "health_check.db.backends.DatabaseBackend",
+                "health_check.cache.backends.CacheBackend",
+            ]
+        ),
         name="health_check-container",
     ),
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
