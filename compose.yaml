@@ -135,7 +135,6 @@ services:
 networks:
   internal:
     driver: bridge
-    internal: true
   caddy:
     external: true
 
