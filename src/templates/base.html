@@ -121,12 +121,10 @@
       {% endblock head %}
 
       {# Analytics #}
-      <script nonce="{{ CSP_NONCE }}"
-              async
-              src="https://stats.mahmoudashraf.dev/js/pa-Is9WGlyUJDZYmVAz1PmuY.js"></script>
+      <script nonce="{{ CSP_NONCE }}" async src="/js/script.js"></script>
       <script nonce="{{ CSP_NONCE }}">
         window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-        plausible.init()
+        plausible.init({ endpoint: "/api/event" });
       </script>
     </head>
   {% endif %}
