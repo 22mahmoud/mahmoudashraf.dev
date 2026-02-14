@@ -38,7 +38,7 @@ services:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
     networks:
       - internal
-    entrypoint: ["/bin/sh", "/app/bin/django-entrypoint.sh"]
+    entrypoint: ["/app/bin/django-entrypoint.sh"]
     env_file:
       - .env
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health/')\""]
+      test: ["CMD", "python", "manage.py", "health_check", "health_check-container", "localhost:8000"]
       interval: 30s
       timeout: 10s
       retries: 3

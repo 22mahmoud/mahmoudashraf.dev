@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
+from health_check.views import HealthCheckView
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
@@ -13,6 +14,11 @@ from src.search.views import SearchView
 
 urlpatterns = debug_toolbar_urls() + [
     path(r"ht/", include("health_check.urls")),
+    path(
+        "container/health/",
+        HealthCheckView.as_view(checks=["health_check.Disk", "health_check.Memory"]),
+        name="health_check-container",
+    ),
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path("forms/contact/", include("src.contact.urls")),
     path("forms/guestbook/", include("src.guestbook.urls")),
