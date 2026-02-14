@@ -3,17 +3,65 @@ uv = "0.10.0"
 
 [tasks.dev]
 alias = "d"
-description = "start dev"
+description = "Start full development stack"
 run = [{ tasks = ["django", "vite", "celery-worker", "celery-beat"] }]
 
 [tasks.django]
-run = "uv run python -m debugpy --listen 5678 manage.py runserver $PORT"
+description = "Run Django dev server with debugpy"
+run = "uv run python -m debugpy --listen 5678 manage.py runserver ${PORT:-8000}"
 
 [tasks.vite]
+description = "Run Vite frontend dev server"
 run = "pnpm exec vite"
 
 [tasks.celery-worker]
-run = "celery -A src.tasks worker -l INFO --without-gossip --without-mingle --without-heartbeat"
+description = "Run Celery worker"
+run = "uv run celery -A src.tasks worker -l INFO --without-gossip --without-mingle --without-heartbeat"
 
 [tasks.celery-beat]
-run = "celery -A src.tasks beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+description = "Run Celery beat scheduler"
+run = "uv run celery -A src.tasks beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+
+[tasks.python-lint]
+description = "Run Ruff lint checks"
+run = "uv run ruff check ."
+
+[tasks.python-lint-fix]
+description = "Run Ruff lint autofixes"
+run = "uv run ruff check . --fix"
+
+[tasks.python-format]
+description = "Run Ruff formatter"
+run = "uv run ruff format ."
+
+[tasks.template-lint]
+description = "Run DjLint checks"
+run = "uv run djlint . --check"
+
+[tasks.template-format]
+description = "Run DjLint formatter"
+run = "uv run djlint . --reformat"
+
+[tasks.python-typecheck]
+description = "Run Pyright type checks"
+run = "uv run pyright"
+
+[tasks.test]
+description = "Run Django test suite"
+run = "uv run python manage.py test"
+
+[tasks.frontend-build]
+description = "Build frontend assets"
+run = "pnpm exec vite build && touch static/.gitkeep"
+
+[tasks.frontend-typecheck]
+description = "Run TypeScript type checks"
+run = "pnpm exec tsc --noEmit --pretty"
+
+[tasks.frontend-lint]
+description = "Run Biome lint"
+run = "pnpm exec biome lint --write"
+
+[tasks.frontend-format]
+description = "Run Biome format"
+run = "pnpm exec biome format --write"

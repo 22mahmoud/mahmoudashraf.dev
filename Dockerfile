@@ -12,7 +12,7 @@ FROM frontend-base AS frontend
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm run build
+RUN pnpm exec vite build && touch static/.gitkeep
 
 FROM ghcr.io/astral-sh/uv:bookworm-slim AS builder
 

@@ -45,16 +45,16 @@ repos:
     hooks:
       - id: local-biome-format
         name: biome format
-        entry: pnpm run format
+        entry: pnpm exec biome format --write
         <<: *biome-base
 
       - id: local-biome-lint
         name: biome lint
-        entry: pnpm run lint
+        entry: pnpm exec biome lint --write
         <<: *biome-base
 
       - id: local-tsc
         name: typescript type check
-        entry: pnpm build:types
+        entry: pnpm exec tsc --noEmit --pretty
         language: system
         pass_filenames: false
