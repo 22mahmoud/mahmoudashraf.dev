@@ -14,3 +14,17 @@ node_modules
 .gitignore
 .gitattributes
 .ruff_cache
+
+# Docker / CI
+Dockerfile
+compose.yaml
+docker-compose*
+.env
+.env.*
+
+# Docs / IDE / misc
+*.md
+.github/
+.vscode/
+.idea/
+.pre-commit-config.yaml

@@ -1,10 +1,10 @@
 #!/bin/bash
-# set -e
+set -euo pipefail
 
 python manage.py migrate --noinput
 
-gunicorn config.wsgi \
-  --workers 5 \
+exec gunicorn config.wsgi \
+  --workers "${WEB_CONCURRENCY:-3}" \
   --bind 0.0.0.0:8000 \
   --worker-class sync \
   --timeout 60 \

@@ -11,8 +11,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,6 +27,12 @@ services:
     command: ["valkey-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
     volumes:
       - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   django:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
@@ -34,9 +41,18 @@ services:
     entrypoint: ["/bin/sh", "/app/bin/django-entrypoint.sh"]
     env_file:
       - .env
+    restart: unless-stopped
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health/')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   celery:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
@@ -54,12 +70,23 @@ services:
       - '--without-gossip'
       - '--without-mingle'
       - '--without-heartbeat'
+    restart: unless-stopped
+    init: true
     depends_on:
-      - django
-      - postgres
-      - redis
+      django:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A src.tasks inspect ping --timeout 10"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 30s
 
-  celery_beat:
+  celerybeat:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:latest
     networks:
       - internal
@@ -74,10 +101,15 @@ services:
       - INFO
       - '--scheduler'
       - 'django_celery_beat.schedulers:DatabaseScheduler'
+    restart: unless-stopped
+    init: true
     depends_on:
-      - django
-      - postgres
-      - redis
+      django:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   nginx:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:latest
@@ -89,12 +121,21 @@ services:
     labels:
       caddy: mahmoudashraf.dev
       caddy.reverse_proxy: "{{upstreams 80}}"
+    restart: unless-stopped
     depends_on:
-      - django
+      django:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
 networks:
   internal:
     driver: bridge
+    internal: true
   caddy:
     external: true
 

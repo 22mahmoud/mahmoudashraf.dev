@@ -42,6 +42,9 @@ RUN SECRET_KEY=build-only-secret uv run python manage.py collectstatic --noinput
 
 FROM debian:bookworm-slim AS django
 
+LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
+LABEL org.opencontainers.image.description="mahmoudashraf.dev Django application"
+
 WORKDIR /app
 
 RUN groupadd --gid 1000 app \
@@ -71,7 +74,10 @@ EXPOSE 8000
 
 ENTRYPOINT []
 
-FROM nginx:stable  AS nginx
+FROM nginx:stable AS nginx
+
+LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
+LABEL org.opencontainers.image.description="mahmoudashraf.dev nginx reverse proxy"
 RUN mkdir -p /var/run/nginx-cache/jscache
 RUN echo "D /var/run/nginx-cache 0755 root root -" > /usr/lib/tmpfiles.d/nginx-cache.conf
 COPY --from=builder /app/staticfiles /usr/share/nginx/html/static
