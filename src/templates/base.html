@@ -121,10 +121,11 @@
       {% endblock head %}
 
       {# Analytics #}
-      <script nonce="{{ CSP_NONCE }}"
+      <script async
+              nonce="{{ CSP_NONCE }}"
+              src="/js/script.js"
               data-goatcounter="/count"
-              async
-              src="/js/script.js"></script>
+              crossorigin="anonymous"></script>
     </head>
   {% endif %}
 
