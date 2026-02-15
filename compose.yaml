@@ -42,10 +42,21 @@ services:
       timeout: 5s
       retries: 5
 
+  static:
+    image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:${IMAGE_TAG:?IMAGE_TAG is required}
+    networks:
+      - caddy
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+
   django:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
     networks:
       - internal
+      - caddy
     entrypoint: ["/app/bin/django-entrypoint.sh"]
     env_file:
       - .env
@@ -55,6 +66,33 @@ services:
     security_opt:
       - no-new-privileges:true
     logging: *default-logging
+    labels:
+      caddy: mahmoudashraf.dev
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+
+      # Redirects
+      caddy.redir_0: "/yt https://www.youtube.com/@22mahmoud 301"
+      caddy.redir_1: "/youtube https://www.youtube.com/@22mahmoud 301"
+      caddy.redir_2: "/gh https://github.com/22mahmoud 301"
+      caddy.redir_3: "/github https://github.com/22mahmoud 301"
+      caddy.redir_4: "/in https://www.linkedin.com/in/22mahmoud 301"
+      caddy.redir_5: "/linkedin https://www.linkedin.com/in/22mahmoud 301"
+
+      # Proxy /js/script.js to goatcounter
+      caddy.handle_0: "/js/script.js"
+      caddy.handle_0.rewrite: "/count.js"
+      caddy.handle_0.reverse_proxy: "goatcounter:8080"
+      caddy.handle_0.reverse_proxy.header_up: "Host stats.mahmoudashraf.dev"
+
+      # Proxy /count to goatcounter
+      caddy.handle_1: "/count"
+      caddy.handle_1.reverse_proxy: "goatcounter:8080"
+      caddy.handle_1.reverse_proxy.header_up: "Host stats.mahmoudashraf.dev"
+
+      # Static Files
+      caddy.handle_2: /static/*
+      caddy.handle_2.0_reverse_proxy: "static:80"
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -126,30 +164,6 @@ services:
       redis:
         condition: service_healthy
 
-  nginx:
-    image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:${IMAGE_TAG:?IMAGE_TAG is required}
-    networks:
-      - caddy
-      - internal
-    env_file:
-      - .env
-    labels:
-      caddy: mahmoudashraf.dev
-      caddy.reverse_proxy: "{{upstreams 80}}"
-    restart: unless-stopped
-    stop_grace_period: 20s
-    security_opt:
-      - no-new-privileges:true
-    logging: *default-logging
-    depends_on:
-      django:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:80/ || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
 
 networks:
   internal:
