@@ -45,7 +45,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=tag
-            type=sha,prefix=sha-
+            type=sha,format=long,prefix=sha-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Docker metadata (nginx)
@@ -56,7 +56,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=tag
-            type=sha,prefix=sha-
+            type=sha,format=long,prefix=sha-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push django image
@@ -89,13 +89,26 @@ jobs:
       group: production-deploy
       cancel-in-progress: true
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload compose.yaml to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: compose.yaml
+          target: ${{ secrets.VPS_APP_DIR }}/
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          port: ${{ secrets.VPS_PORT }}
           script_stop: true
           script: |
             set -euo pipefail
@@ -107,6 +120,6 @@ jobs:
             cd "${{ secrets.VPS_APP_DIR }}"
             export IMAGE_TAG="sha-${{ github.sha }}"
 
-            docker compose pull django celery celerybeat nginx
-            docker compose up -d django celery celerybeat nginx
+            docker compose pull
+            docker compose up -d
             docker compose ps
