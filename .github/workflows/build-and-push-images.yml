@@ -118,7 +118,9 @@ jobs:
             fi
 
             cd "${{ secrets.VPS_APP_DIR }}"
-            export IMAGE_TAG="sha-${{ github.sha }}"
+            IMAGE_TAG="sha-${{ github.sha }}"
+            printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" > .env.deploy
+            export IMAGE_TAG
 
             docker compose pull
             docker compose up -d
