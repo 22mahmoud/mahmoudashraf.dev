@@ -1,9 +1,3 @@
-# pyright: reportCallIssue=false
-# pyright: reportOptionalSubscript=false
-# pyright: reportArgumentType=false
-# pyright: reportArgumentType=false
-# pyright: reportOperatorIssue=false
-# pyright: reportReturnType=false
 from datetime import datetime
 from logging import LogRecord
 from typing import Any
@@ -14,16 +8,16 @@ from pythonjsonlogger.json import JsonFormatter
 class DjangoJsonRequestFormatter(JsonFormatter):
     def add_fields(
         self,
-        log_record: dict[str, Any],
+        log_data: dict[str, Any],
         record: LogRecord,
         message_dict: dict[str, Any],
     ) -> None:
-        super().add_fields(log_record, record, message_dict)
+        super().add_fields(log_data, record, message_dict)
 
-        log_record["time"] = datetime.fromtimestamp(record.created).isoformat()
-        log_record.pop("asctime", None)
+        log_data["time"] = datetime.fromtimestamp(record.created).isoformat()
+        log_data.pop("asctime", None)
 
-        log_record.update(
+        log_data.update(
             {
                 "pid": record.process,
                 "thread": record.thread,
@@ -38,7 +32,7 @@ class DjangoJsonRequestFormatter(JsonFormatter):
 class JsonRequestFormatter(JsonFormatter):
     def add_fields(
         self,
-        log_record: dict[str, Any],
+        log_data: dict[str, Any],
         record: LogRecord,
         message_dict: dict[str, Any],
     ) -> None:
@@ -57,7 +51,7 @@ class JsonRequestFormatter(JsonFormatter):
         if args.get("q"):
             url += f"?{args['q']}"
 
-        log_record.update(
+        log_data.update(
             {
                 "remote_ip": args.get("h"),
                 "method": args.get("m"),
@@ -75,9 +69,9 @@ class JsonRequestFormatter(JsonFormatter):
 class JsonErrorFormatter(JsonFormatter):
     def add_fields(
         self,
-        log_record: dict[str, Any],
+        log_data: dict[str, Any],
         record: LogRecord,
         message_dict: dict[str, Any],
     ) -> None:
-        super().add_fields(log_record, record, message_dict)
-        log_record["level"] = log_record.get("levelname", "")
+        super().add_fields(log_data, record, message_dict)
+        log_data["level"] = log_data.get("levelname", "")
