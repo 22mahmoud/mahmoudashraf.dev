@@ -28,6 +28,7 @@ dependencies = [
   "django-vite>=3.1.0",
   "environs[django]>=14.2.0",
   "gunicorn>=23.0.0",
+  "httpx>=0.28.1",
   "markdown>=3.8.2",
   "pillow>=11.3.0",
   "psutil>=7.0.0",

@@ -13,13 +13,12 @@ from src.base import views
 from src.search.views import SearchView
 
 urlpatterns = debug_toolbar_urls() + [
-    path(r"ht/", include("health_check.urls")),
     path(
-        "container/health/",
+        "ht/container/",
         HealthCheckView.as_view(
             checks=[
-                "health_check.db.backends.DatabaseBackend",
-                "health_check.cache.backends.CacheBackend",
+                "health_check.Database",
+                "health_check.Cache",
             ]
         ),
         name="health_check-container",

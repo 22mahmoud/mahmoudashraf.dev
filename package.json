@@ -9,7 +9,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.23.0",
   "devDependencies": {
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.3.15",
     "@tailwindcss/vite": "^4.1.18",
     "@types/alpinejs": "^3.13.11",
     "@types/alpinejs__collapse": "^3.13.4",
@@ -26,7 +26,7 @@
     "alpinejs": "npm:@alpinejs/csp@^3.15.8",
     "dompurify": "^3.3.1",
     "htmx.org": "^2.0.8",
-    "marked": "^17.0.1",
+    "marked": "^17.0.2",
     "shiki": "^3.22.0"
   },
   "engines": {

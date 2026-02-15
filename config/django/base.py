@@ -15,7 +15,6 @@ from config.settings.django_allauth import (
     ALLAUTH_INSTALLED_APPS,
     ALLAUTH_MIDDLEWARE,
 )
-from config.settings.django_health_check import DJANGO_HEALTH_CHECK_INSTALLED_APPS
 from config.settings.wagtail import (
     WAGTAIL_INSTALLED_APPS,
     WAGTAIL_MIDDLEWARE,
@@ -69,9 +68,9 @@ INSTALLED_APPS = (
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "django.contrib.sitemaps",
+        "health_check",
     ]
     + ALLAUTH_INSTALLED_APPS
-    + DJANGO_HEALTH_CHECK_INSTALLED_APPS
 )
 
 MIDDLEWARE = (
@@ -208,7 +207,7 @@ CACHES = {
 
 CAPTCHA_IMAGE_SIZE = (80, 36)
 
-REDIS_URL = env.str("REDIS_LOCATION", "")
+REDIS_URL = env.str("REDIS_URL", "")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -256,7 +255,6 @@ TMDB_API_KEY = env.str("TMDB_API_KEY", "")
 from config.settings.celery import *  # noqa: E402, F403
 from config.settings.django_allauth import *  # noqa: E402, F403
 from config.settings.django_comments_xtd import *  # noqa: E402, F403
-from config.settings.django_health_check import *  # noqa: E402, F403
 from config.settings.django_storage import *  # noqa: E402, F403
 from config.settings.vite import *  # noqa: E402, F403
 from config.settings.wagtail import *  # noqa: E402, F403

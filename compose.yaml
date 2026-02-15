@@ -61,9 +61,9 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/container/health/ || exit 1"]
-      interval: 30s
-      timeout: 5s
+      test: ["CMD", "python", "manage.py", "health_check", "health_check-container", "django:8000"]
+      interval: 60s
+      timeout: 10s
       retries: 3
       start_period: 30s
 
