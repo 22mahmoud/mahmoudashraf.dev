@@ -41,7 +41,6 @@ ENV DJANGO_SETTINGS_MODULE=config.django.prod
 RUN SECRET_KEY=build-only-secret uv run python manage.py collectstatic --noinput --clear --verbosity 2
 
 FROM debian:bookworm-slim AS django
-
 LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
 LABEL org.opencontainers.image.description="mahmoudashraf.dev Django application"
 
@@ -71,14 +70,11 @@ ENV PATH="/app/.venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=config.django.prod
 
 EXPOSE 8000
-
 ENTRYPOINT []
 
-FROM nginx:stable AS nginx
-
+FROM docker.io/nginx:1.29.5-alpine AS nginx
 LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
 LABEL org.opencontainers.image.description="mahmoudashraf.dev nginx reverse proxy"
-RUN mkdir -p /var/run/nginx-cache/jscache
-RUN echo "D /var/run/nginx-cache 0755 root root -" > /usr/lib/tmpfiles.d/nginx-cache.conf
+
 COPY --from=builder /app/staticfiles /usr/share/nginx/html/static
 COPY nginx/site.conf /etc/nginx/nginx.conf
