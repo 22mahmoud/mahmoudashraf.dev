@@ -118,6 +118,10 @@ services:
       - worker
       - '-l'
       - INFO
+      - '--concurrency=${CELERY_WORKER_CONCURRENCY:-2}'
+      - '--prefetch-multiplier=${CELERY_WORKER_PREFETCH_MULTIPLIER:-1}'
+      - '--max-tasks-per-child=${CELERY_WORKER_MAX_TASKS_PER_CHILD:-500}'
+      - '--max-memory-per-child=${CELERY_WORKER_MAX_MEMORY_PER_CHILD:-524288}'
       - '--without-gossip'
       - '--without-mingle'
       - '--without-heartbeat'
@@ -150,6 +154,8 @@ services:
       - INFO
       - '--scheduler'
       - 'django_celery_beat.schedulers:DatabaseScheduler'
+      - '--max-interval'
+      - '30'
     restart: unless-stopped
     init: true
     stop_grace_period: 45s
