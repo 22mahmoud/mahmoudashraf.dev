@@ -1131,7 +1131,7 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.2,<4" },
     { name = "python-json-logger", specifier = ">=4.0.0,<5" },
     { name = "requests", specifier = ">=2.32.5,<3" },
-    { name = "wagtail", specifier = "==7.2" },
+    { name = "wagtail", specifier = "==7.2.2" },
     { name = "wagtail-seo", specifier = ">=3.1.1,<4" },
     { name = "wagtailmedia", specifier = ">=0.17.2,<1" },
     { name = "wagtailmenus", specifier = ">=4.0.6,<5" },
@@ -1764,7 +1764,7 @@ wheels = [
 
 [[package]]
 name = "wagtail"
-version = "7.2"
+version = "7.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyascii" },
@@ -1786,9 +1786,9 @@ dependencies = [
     { name = "telepath" },
     { name = "willow", extra = ["heif"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/83/1a/79dc8e4cb9ea51f26096e5ce7c8f1619c9534edffe2c7d27b1791e20f2be/wagtail-7.2.tar.gz", hash = "sha256:8a39df908bd64ab029e08bf191f475f54cc914f84aa41e9ae79b41bf41d55ec3", size = 6757172, upload-time = "2025-11-05T12:27:52.195Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/83/42/5fee22c57ae36492c5e9f7875178a59b9558a6ae8e0258c37b2590c7a0e9/wagtail-7.2.2.tar.gz", hash = "sha256:bf6adaa3acd90d9ee7734756dd7031b0901eedb80a4aa4e5188ab1e481ce30be", size = 6767233, upload-time = "2026-02-03T12:10:32.417Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2d/da/55b302face51c505ebeb1df349c90455058362d53ed5c29114647a8fdbba/wagtail-7.2-py3-none-any.whl", hash = "sha256:2c0d41545976b57266e84df3f03e7dd812e6a4d0a8d61d5b76863fe021613973", size = 9229326, upload-time = "2025-11-05T12:27:46.459Z" },
+    { url = "https://files.pythonhosted.org/packages/12/99/8e66ad7eaf8789269136b3c86c31d50f2134131815c65d405618495fa7c2/wagtail-7.2.2-py3-none-any.whl", hash = "sha256:2e62316717bd19c57de5e6cb7f800c8acdb51862b3067b9e788c0837bda9c9f0", size = 9238344, upload-time = "2026-02-03T12:10:29.738Z" },
 ]
 
 [[package]]
