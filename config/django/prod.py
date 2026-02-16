@@ -3,6 +3,7 @@ import sys
 from csp.constants import NONCE, NONE, SELF, UNSAFE_INLINE
 
 from config.django.base import *  # noqa: F403
+from config.django.base import DJANGO_ADMIN_PATH, WAGTAIL_ADMIN_PATH
 from config.env import env
 from config.settings.wagtail_prod import *  # noqa: E402, F403
 
@@ -87,7 +88,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = env.str("EMAIL_FROM", "")
 
 CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ["/admin/", "/cms/"],
+    "EXCLUDE_URL_PREFIXES": [DJANGO_ADMIN_PATH, WAGTAIL_ADMIN_PATH],
     "DIRECTIVES": {
         "default-src": [NONE],
         "script-src": [SELF, NONCE],
