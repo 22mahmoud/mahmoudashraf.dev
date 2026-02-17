@@ -30,7 +30,7 @@ const allowedTags = [
   'img',
 ];
 
-const allowedImgDomains = ['.giphy.com', '.tenor.com', '.imgur.com'];
+const allowedImgDomains = ['.giphy.com', '.tenor.com', '.ibb.co'];
 const allowedAttrs = ['src', 'alt', 'height', 'width'];
 
 DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {

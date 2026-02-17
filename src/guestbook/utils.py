@@ -18,7 +18,7 @@ def allow_src(_, name, value):
         return True
     if name == "src":
         p = urlparse(value)
-        allowed_domains = (".giphy.com", ".tenor.com", ".imgur.com")
+        allowed_domains = (".giphy.com", ".tenor.com", ".ibb.co")
         return not p.netloc or any(p.netloc.endswith(domain) for domain in allowed_domains)
 
     return False

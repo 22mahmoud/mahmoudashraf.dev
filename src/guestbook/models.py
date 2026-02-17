@@ -89,7 +89,7 @@ class Guestbook(models.Model):
         max_length=2000,
         help_text=(
             "Supports basic Markdown and HTML. Max 2000 characters. "
-            "GIFs allowed from giphy/tenor/imgur."
+            "GIFs allowed from giphy/tenor/imgbb."
         ),
     )
     message_html = models.TextField(blank=True, null=True)

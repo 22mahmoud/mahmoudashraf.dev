@@ -99,7 +99,7 @@ SECURE_CSP = {
         "data:",
         "https://*.giphy.com",
         "https://*.tenor.com",
-        "https://*.imgur.com",
+        "https://*.ibb.co",
         "https://static.mahmoudashraf.dev",
         "https://www.gravatar.com",
     ],
