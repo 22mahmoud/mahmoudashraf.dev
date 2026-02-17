@@ -25,25 +25,27 @@ def allow_src(_, name, value):
 
 
 ALLOWED_ATTRS = {"a": ["href"], "img": allow_src, "code": ["class"]}
-ALLOWED_TAGS = [
-    "p",
-    "br",
-    "strong",
-    "em",
-    "hr",
-    "code",
-    "pre",
-    "ul",
-    "ol",
-    "li",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "img",
-]
+ALLOWED_TAGS = frozenset(
+    {
+        "p",
+        "br",
+        "strong",
+        "em",
+        "hr",
+        "code",
+        "pre",
+        "ul",
+        "ol",
+        "li",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "img",
+    }
+)
 
 
 def optimize_img_tag(img: Tag):
