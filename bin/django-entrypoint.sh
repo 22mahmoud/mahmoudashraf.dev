@@ -13,6 +13,5 @@ exec gunicorn config.wsgi \
   --log-level info \
   --max-requests 1000 \
   --log-config-json logconfig.json \
-  --forwarded-allow-ips "*" \
   --no-control-socket \
   --max-requests-jitter 100

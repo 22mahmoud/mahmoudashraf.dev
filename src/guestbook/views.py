@@ -1,3 +1,5 @@
+import logging
+
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
@@ -7,6 +9,8 @@ from wagtail.models import Page
 
 from .forms import GuestbookForm
 from .tasks import optimize_guestbook_html
+
+logger = logging.getLogger(__name__)
 
 
 class GuestbookView(View):
@@ -20,7 +24,10 @@ class GuestbookView(View):
             guestbook = form.save(commit=False)
             guestbook.message_html = form.render_message()
             guestbook.save()
-            optimize_guestbook_html.enqueue(guestbook.id)  # type: ignore
+            result = optimize_guestbook_html.enqueue(guestbook.id)  # type: ignore
+
+            if result.errors:
+                logger.warning(result.errors)
 
             if is_htmx:
                 return HttpResponseClientRedirect("/guestbook")

@@ -1,3 +1,4 @@
+import logging
 from io import BytesIO
 from urllib.parse import urlparse
 
@@ -8,6 +9,8 @@ from bs4 import BeautifulSoup, Tag
 from PIL import Image
 
 from src.base.blocks.codeblock import highlight_code_with_shiki
+
+logger = logging.getLogger(__name__)
 
 
 def allow_src(_, name, value):
@@ -101,7 +104,7 @@ def optimize_img_tag(img: Tag):
         img["style"] = f"aspect-ratio: {actual_width}/{actual_height};"
 
     except Exception as e:
-        print(f"[IMG ERROR] src={src} — {type(e).__name__}: {e}")
+        logger.exception(f"[IMG ERROR] src={src} — {type(e).__name__}: {e}")
 
     img["loading"] = "lazy"
     img["decoding"] = "async"
@@ -127,7 +130,7 @@ def highlight_code(pre: Tag):
         highlighted_fragment = BeautifulSoup(highlighted_html, "html.parser")
         pre.replace_with(highlighted_fragment)
     except Exception as e:
-        print(f"[CODE HIGHLIGHT ERROR] lang={language}: {e}")
+        logger.exception(f"[CODE HIGHLIGHT ERROR] lang={language}: {e}")
 
 
 def render_guestbook_markdown(value):
