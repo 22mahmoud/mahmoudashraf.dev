@@ -76,8 +76,7 @@ LOGGING = {
     },
 }
 
-
-EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = env.str("EMAIL_HOST", "")
 EMAIL_PORT = env.str("EMAIL_PORT", "")

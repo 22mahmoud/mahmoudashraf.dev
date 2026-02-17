@@ -42,13 +42,11 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = (
     WAGTAIL_INSTALLED_APPS
     + [
+        "django_tasks",
         "src.feeds",
-        "src.tasks",
         "src.comments",
         "src.accounts",
         "debug_toolbar",
-        "djcelery_email",
-        "django_celery_results",
         "django_comments_xtd",
         "django_comments",
         "django.forms",
@@ -209,6 +207,13 @@ REDIS_URL = env.str("REDIS_URL", "")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.immediate.ImmediateBackend",
+    },
+}
+
+
 PERMISSIONS_POLICY = {
     "accelerometer": [],
     "ambient-light-sensor": [],
@@ -250,7 +255,6 @@ WAGTAIL_ADMIN_PATH = env.str("WAGTAIL_ADMIN_PATH", "cms/")
 TMDB_API_KEY = env.str("TMDB_API_KEY", "")
 
 # lib settings
-from config.settings.celery import *  # noqa: E402, F403
 from config.settings.django_allauth import *  # noqa: E402, F403
 from config.settings.django_comments_xtd import *  # noqa: E402, F403
 from config.settings.django_storage import *  # noqa: E402, F403

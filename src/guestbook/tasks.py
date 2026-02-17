@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup, Tag
-from celery import shared_task
+from django_tasks import task
 
 from src.guestbook.utils import highlight_code, optimize_img_tag
 
 
-@shared_task
+@task()
 def optimize_guestbook_html(guestbook_id: int):
     from src.guestbook.models import Guestbook
 

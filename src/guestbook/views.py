@@ -20,7 +20,7 @@ class GuestbookView(View):
             guestbook = form.save(commit=False)
             guestbook.message_html = form.render_message()
             guestbook.save()
-            optimize_guestbook_html.delay(guestbook.id)  # type: ignore
+            optimize_guestbook_html.enqueue(guestbook.id)  # type: ignore
 
             if is_htmx:
                 return HttpResponseClientRedirect("/guestbook")
