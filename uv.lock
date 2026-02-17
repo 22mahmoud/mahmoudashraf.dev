@@ -397,15 +397,15 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "4.0.0"
+version = "4.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "dnspython" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/db/e0/d0e9cf78f4aaea9f0f8cc9e6e2daeac41604960c04c8fdf66277e4f8a84a/django_health_check-4.0.0.tar.gz", hash = "sha256:1b49c36cb1ae90edd8c2667c889b4b9c6aa8317d8444a8bc884061c5cf9ad706", size = 19963, upload-time = "2026-02-12T14:45:58.554Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2d/c6/ddf6cf6325e63a3c03892813a1d0e04621ecb98260a8399216dbd0c49764/django_health_check-4.0.1.tar.gz", hash = "sha256:fb5210a3092503ce090791b2c7812a36cf6f53465363aff6a27572e9f42df871", size = 20044, upload-time = "2026-02-17T11:30:18.32Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/36/f8950eaf079600d9877490baaae49d52d919e5b576ef694e6b42709c628c/django_health_check-4.0.0-py3-none-any.whl", hash = "sha256:1d90a8fdd7625ea2fd84e46225d7e435440bf4cad564a382bc6282c78c77cdbe", size = 24848, upload-time = "2026-02-12T14:45:57.355Z" },
+    { url = "https://files.pythonhosted.org/packages/58/12/43e2884536412296d7302aea1b87a7bfa753e341197cd643f504445106d4/django_health_check-4.0.1-py3-none-any.whl", hash = "sha256:f5bbf1c36ba89aa76163cdddef7d04043ab281d31664466d47ec07d8dc3ae540", size = 24894, upload-time = "2026-02-17T11:30:16.776Z" },
 ]
 
 [[package]]
@@ -1178,11 +1178,11 @@ wheels = [
 
 [[package]]
 name = "redis"
-version = "6.4.0"
+version = "7.2.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0d/d6/e8b92798a5bd67d659d51a18170e91c16ac3b59738d91894651ee255ed49/redis-6.4.0.tar.gz", hash = "sha256:b01bc7282b8444e28ec36b261df5375183bb47a07eb9c603f284e89cbc5ef010", size = 4647399, upload-time = "2025-08-07T08:10:11.441Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/32/6fac13a11e73e1bc67a2ae821a72bfe4c2d8c4c48f0267e4a952be0f1bae/redis-7.2.0.tar.gz", hash = "sha256:4dd5bf4bd4ae80510267f14185a15cba2a38666b941aff68cccf0256b51c1f26", size = 4901247, upload-time = "2026-02-16T17:16:22.797Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/02/89e2ed7e85db6c93dfa9e8f691c5087df4e3551ab39081a4d7c6d1f90e05/redis-6.4.0-py3-none-any.whl", hash = "sha256:f0544fa9604264e9464cdf4814e7d4830f74b165d52f2a330a760a88dd248b7f", size = 279847, upload-time = "2025-08-07T08:10:09.84Z" },
+    { url = "https://files.pythonhosted.org/packages/86/cf/f6180b67f99688d83e15c84c5beda831d1d341e95872d224f87ccafafe61/redis-7.2.0-py3-none-any.whl", hash = "sha256:01f591f8598e483f1842d429e8ae3a820804566f1c73dca1b80e23af9fba0497", size = 394898, upload-time = "2026-02-16T17:16:20.693Z" },
 ]
 
 [[package]]
