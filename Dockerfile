@@ -21,7 +21,7 @@ ENV UV_LINK_MODE=copy
 ENV UV_PYTHON_INSTALL_DIR=/python
 ENV UV_PYTHON_PREFERENCE=only-managed
 
-RUN uv python install 3.13.5
+RUN uv python install 3.14.3
 
 WORKDIR /app
 

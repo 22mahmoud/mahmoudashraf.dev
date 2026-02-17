@@ -47,7 +47,6 @@ INSTALLED_APPS = (
         "src.comments",
         "src.accounts",
         "debug_toolbar",
-        "django_celery_beat",
         "djcelery_email",
         "django_celery_results",
         "django_comments_xtd",
@@ -61,7 +60,7 @@ INSTALLED_APPS = (
         "django_vite",
         "django.contrib.redirects",
         "polymorphic",
-        "csp",
+        "django.contrib.postgres",
         "django.contrib.sites",
         "django.contrib.contenttypes",
         "django.contrib.sessions",
@@ -85,7 +84,7 @@ MIDDLEWARE = (
         "django.middleware.csrf.CsrfViewMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
-        "csp.middleware.CSPMiddleware",
+        "django.middleware.csp.ContentSecurityPolicyMiddleware",
     ]
     + ALLAUTH_MIDDLEWARE
     + WAGTAIL_MIDDLEWARE

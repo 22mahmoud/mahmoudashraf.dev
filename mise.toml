@@ -4,7 +4,8 @@ uv = "0.10.0"
 [tasks.dev]
 alias = "d"
 description = "Start full development stack"
-run = [{ tasks = ["django", "vite", "celery-worker", "celery-beat"] }]
+# run = [{ tasks = ["django", "vite", "celery-worker", "celery-beat"] }]
+run = [{ tasks = ["django", "vite"] }]
 
 [tasks.django]
 description = "Run Django dev server with debugpy"

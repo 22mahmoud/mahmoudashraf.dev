@@ -105,70 +105,70 @@ services:
       retries: 3
       start_period: 30s
 
-  celery:
-    image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
-    networks:
-      - internal
-    env_file:
-      - .env
-    command:
-      - celery
-      - '-A'
-      - src.tasks
-      - worker
-      - '-l'
-      - INFO
-      - '--concurrency=${CELERY_WORKER_CONCURRENCY:-2}'
-      - '--prefetch-multiplier=${CELERY_WORKER_PREFETCH_MULTIPLIER:-1}'
-      - '--max-tasks-per-child=${CELERY_WORKER_MAX_TASKS_PER_CHILD:-500}'
-      - '--max-memory-per-child=${CELERY_WORKER_MAX_MEMORY_PER_CHILD:-524288}'
-      - '--without-gossip'
-      - '--without-mingle'
-      - '--without-heartbeat'
-    restart: unless-stopped
-    init: true
-    stop_grace_period: 45s
-    security_opt:
-      - no-new-privileges:true
-    logging: *default-logging
-    depends_on:
-      django:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+  # celery:
+  #   image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
+  #   networks:
+  #     - internal
+  #   env_file:
+  #     - .env
+  #   command:
+  #     - celery
+  #     - '-A'
+  #     - src.tasks
+  #     - worker
+  #     - '-l'
+  #     - INFO
+  #     - '--concurrency=${CELERY_WORKER_CONCURRENCY:-2}'
+  #     - '--prefetch-multiplier=${CELERY_WORKER_PREFETCH_MULTIPLIER:-1}'
+  #     - '--max-tasks-per-child=${CELERY_WORKER_MAX_TASKS_PER_CHILD:-500}'
+  #     - '--max-memory-per-child=${CELERY_WORKER_MAX_MEMORY_PER_CHILD:-524288}'
+  #     - '--without-gossip'
+  #     - '--without-mingle'
+  #     - '--without-heartbeat'
+  #   restart: unless-stopped
+  #   init: true
+  #   stop_grace_period: 45s
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   logging: *default-logging
+  #   depends_on:
+  #     django:
+  #       condition: service_healthy
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
 
-  celerybeat:
-    image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
-    networks:
-      - internal
-    env_file:
-      - .env
-    command:
-      - celery
-      - '-A'
-      - src.tasks
-      - beat
-      - '-l'
-      - INFO
-      - '--scheduler'
-      - 'django_celery_beat.schedulers:DatabaseScheduler'
-      - '--max-interval'
-      - '30'
-    restart: unless-stopped
-    init: true
-    stop_grace_period: 45s
-    security_opt:
-      - no-new-privileges:true
-    logging: *default-logging
-    depends_on:
-      django:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+  # celerybeat:
+  #   image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
+  #   networks:
+  #     - internal
+  #   env_file:
+  #     - .env
+  #   command:
+  #     - celery
+  #     - '-A'
+  #     - src.tasks
+  #     - beat
+  #     - '-l'
+  #     - INFO
+  #     - '--scheduler'
+  #     - 'django_celery_beat.schedulers:DatabaseScheduler'
+  #     - '--max-interval'
+  #     - '30'
+  #   restart: unless-stopped
+  #   init: true
+  #   stop_grace_period: 45s
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   logging: *default-logging
+  #   depends_on:
+  #     django:
+  #       condition: service_healthy
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
 
 
 networks:

@@ -1,9 +1,8 @@
 import sys
 
-from csp.constants import NONCE, NONE, SELF, UNSAFE_INLINE
+from django.utils.csp import CSP
 
 from config.django.base import *  # noqa: F403
-from config.django.base import DJANGO_ADMIN_PATH, WAGTAIL_ADMIN_PATH
 from config.env import env
 from config.settings.wagtail_prod import *  # noqa: E402, F403
 
@@ -87,40 +86,37 @@ EMAIL_HOST_PASSWORD = env.str("EMAIL_PASSWORD", "")
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = env.str("EMAIL_FROM", "")
 
-CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ["/" + DJANGO_ADMIN_PATH, "/" + WAGTAIL_ADMIN_PATH],
-    "DIRECTIVES": {
-        "default-src": [NONE],
-        "script-src": [SELF, NONCE],
-        "style-src": [SELF, UNSAFE_INLINE],
-        "font-src": [SELF],
-        "img-src": [
-            SELF,
-            "data:",
-            "https://*.giphy.com",
-            "https://*.tenor.com",
-            "https://*.imgur.com",
-            "https://static.mahmoudashraf.dev",
-            "https://www.gravatar.com",
-        ],
-        "media-src": [
-            SELF,
-            "https://static.mahmoudashraf.dev",
-        ],
-        "connect-src": [SELF],
-        "manifest-src": [SELF],
-        "object-src": [NONE],
-        "frame-ancestors": [SELF],
-        "frame-src": [
-            SELF,
-            "https://*.youtube.com",
-        ],
-        "form-action": [
-            SELF,
-            "https://github.com",
-            "https://accounts.google.com",
-        ],
-        "base-uri": [SELF],
-        "upgrade-insecure-requests": True,
-    },
+SECURE_CSP = {
+    "default-src": [CSP.NONE],
+    "script-src": [CSP.SELF, CSP.NONCE],
+    "style-src": [CSP.SELF, CSP.UNSAFE_INLINE],
+    "font-src": [CSP.SELF],
+    "img-src": [
+        CSP.SELF,
+        "data:",
+        "https://*.giphy.com",
+        "https://*.tenor.com",
+        "https://*.imgur.com",
+        "https://static.mahmoudashraf.dev",
+        "https://www.gravatar.com",
+    ],
+    "media-src": [
+        CSP.SELF,
+        "https://static.mahmoudashraf.dev",
+    ],
+    "connect-src": [CSP.SELF],
+    "manifest-src": [CSP.SELF],
+    "object-src": [CSP.NONE],
+    "frame-ancestors": [CSP.SELF],
+    "frame-src": [
+        CSP.SELF,
+        "https://*.youtube.com",
+    ],
+    "form-action": [
+        CSP.SELF,
+        "https://github.com",
+        "https://accounts.google.com",
+    ],
+    "base-uri": [CSP.SELF],
+    "upgrade-insecure-requests": True,
 }
