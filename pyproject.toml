@@ -3,7 +3,7 @@ name = "maw-sh"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = "==3.14.3"
 dependencies = [
   "beautifulsoup4>=4.13.4,<5",
   "bleach>=6.3.0,<7",
@@ -14,7 +14,6 @@ dependencies = [
   "django-celery-email-reboot>=4.2.0,<5",
   "django-celery-results>=2.6.0,<3",
   "django-comments-xtd>=2.10.11,<3",
-  "django-csp>=4.0,<5",
   "django-debug-toolbar>=6.2.0,<7",
   "django-health-check>=4.0.0,<5",
   "django-htmx>=1.27.0,<2",
