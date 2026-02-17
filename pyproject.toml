@@ -22,7 +22,6 @@ dependencies = [
   "django-redis>=6.0.0,<7",
   "django-simple-captcha>=0.6.3,<1",
   "django-storages[s3]>=1.14.6,<2",
-  "django-template-partials>=25.3,<26",
   "django-vite>=3.1.0,<4",
   "environs[django]>=14.5.0,<15",
   "gunicorn>=25.1.0,<26",

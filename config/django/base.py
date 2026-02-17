@@ -51,7 +51,6 @@ INSTALLED_APPS = (
         "django_celery_results",
         "django_comments_xtd",
         "django_comments",
-        "template_partials",
         "django.forms",
         "captcha",
         "django_htmx",
