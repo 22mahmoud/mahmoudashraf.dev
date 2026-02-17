@@ -88,7 +88,11 @@ DEFAULT_FROM_EMAIL = env.str("EMAIL_FROM", "")
 
 SECURE_CSP = {
     "default-src": [CSP.NONE],
-    "script-src": [CSP.SELF, CSP.NONCE],
+    "script-src": [
+        CSP.SELF,
+        CSP.NONCE,
+        "https://static.cloudflareinsights.com",
+    ],
     "style-src": [CSP.SELF, CSP.UNSAFE_INLINE],
     "font-src": [CSP.SELF],
     "img-src": [
@@ -104,7 +108,11 @@ SECURE_CSP = {
         CSP.SELF,
         "https://static.mahmoudashraf.dev",
     ],
-    "connect-src": [CSP.SELF],
+    "connect-src": [
+        CSP.SELF,
+        "https://cloudflareinsights.com",
+        "https://*.cloudflareinsights.com",
+    ],
     "manifest-src": [CSP.SELF],
     "object-src": [CSP.NONE],
     "frame-ancestors": [CSP.SELF],

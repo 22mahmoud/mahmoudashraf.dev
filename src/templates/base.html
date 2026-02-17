@@ -12,7 +12,7 @@
 
       {# HTMX config #}
       <meta name="htmx-config"
-            content='{"inlineStyleNonce":"{{ CSP_NONCE }}","inlineScriptNonce":"{{ CSP_NONCE }}","includeIndicatorStyles":false,"allowEval":false}'>
+            content='{"inlineStyleNonce":"{{ csp_nonce }}","inlineScriptNonce":"{{ csp_nonce }}","includeIndicatorStyles":false,"allowEval":false}'>
 
       {# Fediverse #}
       <meta name="fediverse:creator" content="@22mahmoud@fosstodon.org" />
@@ -102,8 +102,8 @@
       {% endif %}
 
       {# JavaScript / Styles #}
-      <script nonce="{{ CSP_NONCE }}">document.documentElement.classList.remove('no-js');</script>
-      <style nonce="{{ CSP_NONCE }}">
+      <script nonce="{{ csp_nonce }}">document.documentElement.classList.remove('no-js');</script>
+      <style nonce="{{ csp_nonce }}">
         [x-cloak] { display: none !important; }
         .no-js .js-only { display: none; }
         .js-only { visibility: visible; }
@@ -115,14 +115,14 @@
             href="https://maw.sh{{ request.path }}">
 
       {% vite_hmr_client %}
-      {% vite_asset 'src/resources/js/app.ts' nonce=CSP_NONCE %}
+      {% vite_asset 'src/resources/js/app.ts' nonce=csp_nonce %}
 
       {% block head %}
       {% endblock head %}
 
       {# Analytics #}
       <script async
-              nonce="{{ CSP_NONCE }}"
+              nonce="{{ csp_nonce }}"
               src="/js/script.js"
               data-goatcounter="/count"
               crossorigin="anonymous"></script>

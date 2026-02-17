@@ -84,7 +84,7 @@ MIDDLEWARE = (
         "django.middleware.csrf.CsrfViewMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
-        "django.middleware.csp.ContentSecurityPolicyMiddleware",
+        "src.base.middleware.WagtailAwareContentSecurityPolicyMiddleware",
     ]
     + ALLAUTH_MIDDLEWARE
     + WAGTAIL_MIDDLEWARE
@@ -107,7 +107,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "src.base.context_processors.global_search_form",
                 "src.base.context_processors.webrings_context",
-                "csp.context_processors.nonce",
+                "django.template.context_processors.csp",
             ]
             + WAGTAIL_TEMPLATE_CONTEXT_PROCESSORS,
         },
