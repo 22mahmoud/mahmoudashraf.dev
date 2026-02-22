@@ -1,8 +1,28 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
 from datetime import datetime
-from logging import LogRecord
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pythonjsonlogger.json import JsonFormatter
+
+if TYPE_CHECKING:
+    from logging import LogRecord
+
+
+def _first_forwarded_ip(value: Any) -> str | None:
+    if value is None:
+        return None
+
+    ip_value = str(value).strip()
+    if not ip_value or ip_value == "-":
+        return None
+
+    first_ip = ip_value.split(",", 1)[0].strip()
+    if not first_ip or first_ip == "-":
+        return None
+
+    return first_ip
 
 
 class DjangoJsonRequestFormatter(JsonFormatter):
@@ -36,7 +56,7 @@ class JsonRequestFormatter(JsonFormatter):
         record: LogRecord,
         message_dict: dict[str, Any],
     ) -> None:
-        args: dict = record.args
+        args: Mapping[str, Any] = record.args if isinstance(record.args, Mapping) else {}
 
         t = args.get("t", "").strip("[]")
         response_time = None
@@ -51,9 +71,16 @@ class JsonRequestFormatter(JsonFormatter):
         if args.get("q"):
             url += f"?{args['q']}"
 
+        remote_ip = (
+            _first_forwarded_ip(args.get("{cf-connecting-ip}i"))
+            or _first_forwarded_ip(args.get("{x-forwarded-for}i"))
+            or _first_forwarded_ip(args.get("{x-real-ip}i"))
+            or _first_forwarded_ip(args.get("h"))
+        )
+
         log_data.update(
             {
-                "remote_ip": args.get("h"),
+                "remote_ip": remote_ip,
                 "method": args.get("m"),
                 "path": url,
                 "status": args.get("s"),
