@@ -51,6 +51,11 @@ services:
     security_opt:
       - no-new-privileges:true
     logging: *default-logging
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -I http://localhost/static/ > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   django:
     image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
