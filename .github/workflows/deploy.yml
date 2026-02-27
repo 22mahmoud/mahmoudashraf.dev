@@ -61,3 +61,21 @@ jobs:
             docker compose pull
             docker compose up -d
             docker compose ps
+
+      - name: Notify Telegram
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            *${{ job.status == 'success' && '✅ Deploy Succeeded' || '❌ Deploy Failed' }}*
+
+            *Repo:* `${{ github.repository }}`
+            *Commit:* `${{ github.event.workflow_run.head_sha }}`
+            *Message:* ${{ github.event.workflow_run.head_commit.message }}
+            *Author:* ${{ github.event.workflow_run.head_commit.author.name }}
+            *Branch:* `master`
+
+            [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
