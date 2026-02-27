@@ -110,9 +110,6 @@
       </style>
 
       {% include "wagtailseo/meta.html" %}
-      <link rel="shortlink"
-            type="text/html"
-            href="https://maw.sh{{ request.path }}">
 
       {% vite_hmr_client %}
       {% vite_asset 'src/resources/js/app.ts' nonce=csp_nonce %}

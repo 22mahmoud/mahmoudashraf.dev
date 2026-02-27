@@ -9,7 +9,7 @@
 ###     $ ./bin/db-backup
 ###
 ### Cron example (daily at 03:00):
-###     0 3 * * * cd /path/to/maw.sh && ./bin/db-backup >> ./backups/cron.log 2>&1
+###     0 3 * * * cd /path/to/mahmoudashraf.dev && ./bin/db-backup >> ./backups/cron.log 2>&1
 ###
 ### Environment overrides:
 ###     BACKUP_DIR      Backup directory   (default: ./backups)
