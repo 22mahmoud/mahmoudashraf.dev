@@ -15,6 +15,9 @@
 ###     BACKUP_DIR      Backup directory   (default: ./backups)
 ###     RETENTION_DAYS  Retention period   (default: 7)
 ###     COMPOSE_FILE    Compose file path  (default: compose.yaml)
+###     R2_REMOTE       rclone remote name (default: r2-mahmoudashraf-dev)
+###     R2_BUCKET       R2 bucket name     (default: mahmoudashraf-dev)
+###     R2_PATH         Path inside bucket (default: backups)
 
 set -euo pipefail
 
@@ -25,6 +28,9 @@ BACKUP_DIR="${BACKUP_DIR:-${PROJECT_DIR}/backups}"
 RETENTION_DAYS="${RETENTION_DAYS:-7}"
 COMPOSE_FILE="${COMPOSE_FILE:-${PROJECT_DIR}/compose.yaml}"
 BACKUP_PREFIX="backup"
+R2_REMOTE="${R2_REMOTE:-r2-mahmoudashraf-dev}"
+R2_BUCKET="${R2_BUCKET:-mahmoudashraf-dev}"
+R2_PATH="${R2_PATH:-backups}"
 
 # ── Helpers ───────────────────────────────────────────────────────
 msg_info() { echo -e "$(date +'%Y-%m-%d %H:%M:%S') \e[1m[INFO]\e[0m $*"; }
@@ -75,6 +81,19 @@ pruned=$(find "$BACKUP_DIR" -maxdepth 1 -name "${BACKUP_PREFIX}_*.sql.gz" \
 
 if [[ "$pruned" -gt 0 ]]; then
   msg_info "Pruned ${pruned} backup(s) older than ${RETENTION_DAYS} days"
+fi
+
+# ── Upload to R2 ─────────────────────────────────────────────────
+if command -v rclone &>/dev/null; then
+  r2_dest="${R2_REMOTE}:${R2_BUCKET}/${R2_PATH}"
+  msg_info "Uploading ${backup_filename} to ${r2_dest}..."
+  if rclone copy "$backup_path" "$r2_dest"; then
+    msg_success "Uploaded ${backup_filename} to R2"
+  else
+    msg_error "R2 upload failed (backup is still saved locally)"
+  fi
+else
+  msg_info "rclone not installed — skipping R2 upload"
 fi
 
 remaining=$(find "$BACKUP_DIR" -maxdepth 1 -name "${BACKUP_PREFIX}_*.sql.gz" | wc -l)
