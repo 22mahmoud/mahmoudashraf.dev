@@ -87,7 +87,7 @@ fi
 if command -v rclone &>/dev/null; then
   r2_dest="${R2_REMOTE}:${R2_BUCKET}/${R2_PATH}"
   msg_info "Uploading ${backup_filename} to ${r2_dest}..."
-  if rclone copy "$backup_path" "$r2_dest"; then
+  if rclone copy "$backup_path" "$r2_dest" --s3-no-check-bucket; then
     msg_success "Uploaded ${backup_filename} to R2"
   else
     msg_error "R2 upload failed (backup is still saved locally)"
