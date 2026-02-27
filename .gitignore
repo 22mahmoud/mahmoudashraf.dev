@@ -179,4 +179,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
 
+# Backups
+backups/
+
 AGENTS.md

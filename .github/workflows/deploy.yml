@@ -26,14 +26,14 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: Upload compose.yaml to VPS
+      - name: Upload config and scripts to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          source: compose.yaml
+          source: "compose.yaml,bin/db-backup,bin/db-restore"
           target: ${{ secrets.VPS_APP_DIR }}/
 
       - name: Deploy to VPS
@@ -52,6 +52,8 @@ jobs:
             fi
 
             cd "${{ secrets.VPS_APP_DIR }}"
+            chmod +x bin/db-backup bin/db-restore
+
             IMAGE_TAG="sha-${{ github.event.workflow_run.head_sha }}"
             printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" > .env.deploy
             export IMAGE_TAG

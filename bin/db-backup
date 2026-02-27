@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+### Create a PostgreSQL database backup via Docker Compose.
+###
+### Runs pg_dump inside the postgres container and streams the
+### compressed output to the host filesystem. No extra volumes needed.
+###
+### Usage:
+###     $ ./bin/db-backup
+###
+### Cron example (daily at 03:00):
+###     0 3 * * * cd /path/to/maw.sh && ./bin/db-backup >> ./backups/cron.log 2>&1
+###
+### Environment overrides:
+###     BACKUP_DIR      Backup directory   (default: ./backups)
+###     RETENTION_DAYS  Retention period   (default: 7)
+###     COMPOSE_FILE    Compose file path  (default: compose.yaml)
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+BACKUP_DIR="${BACKUP_DIR:-${PROJECT_DIR}/backups}"
+RETENTION_DAYS="${RETENTION_DAYS:-7}"
+COMPOSE_FILE="${COMPOSE_FILE:-${PROJECT_DIR}/compose.yaml}"
+BACKUP_PREFIX="backup"
+
+# ── Helpers ───────────────────────────────────────────────────────
+msg_info() { echo -e "$(date +'%Y-%m-%d %H:%M:%S') \e[1m[INFO]\e[0m $*"; }
+msg_success() { echo -e "$(date +'%Y-%m-%d %H:%M:%S') \e[32m[OK]\e[0m $*"; }
+msg_error() { echo -e "$(date +'%Y-%m-%d %H:%M:%S') \e[31m[ERROR]\e[0m $*" >&2; }
+
+# ── Pre-flight checks ────────────────────────────────────────────
+mkdir -p "$BACKUP_DIR"
+
+if ! docker compose -f "$COMPOSE_FILE" ps --status running --format '{{.Name}}' 2>/dev/null |
+  grep -q 'postgres'; then
+  msg_error "PostgreSQL container is not running."
+  msg_error "Start it with: docker compose -f ${COMPOSE_FILE} up -d postgres"
+  exit 1
+fi
+
+# ── Create backup ────────────────────────────────────────────────
+backup_filename="${BACKUP_PREFIX}_$(date +'%Y_%m_%dT%H_%M_%S').sql.gz"
+backup_path="${BACKUP_DIR}/${backup_filename}"
+
+msg_info "Starting database backup..."
+
+# -T disables pseudo-TTY so piping works correctly.
+# Env vars POSTGRES_USER / POSTGRES_DB are set inside the container
+# by the compose environment block.
+if docker compose -f "$COMPOSE_FILE" exec -T postgres \
+  bash -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB"' |
+  gzip >"$backup_path"; then
+
+  # Guard against an empty dump (e.g. auth failure that exits 0)
+  if [[ ! -s "$backup_path" ]]; then
+    msg_error "Backup file is empty — removing ${backup_filename}"
+    rm -f "$backup_path"
+    exit 1
+  fi
+
+  backup_size=$(du -h "$backup_path" | cut -f1)
+  msg_success "Created ${backup_filename} (${backup_size})"
+else
+  msg_error "pg_dump failed"
+  rm -f "$backup_path"
+  exit 1
+fi
+
+# ── Prune old backups ────────────────────────────────────────────
+pruned=$(find "$BACKUP_DIR" -maxdepth 1 -name "${BACKUP_PREFIX}_*.sql.gz" \
+  -mtime +"$RETENTION_DAYS" -delete -print | wc -l)
+
+if [[ "$pruned" -gt 0 ]]; then
+  msg_info "Pruned ${pruned} backup(s) older than ${RETENTION_DAYS} days"
+fi
+
+remaining=$(find "$BACKUP_DIR" -maxdepth 1 -name "${BACKUP_PREFIX}_*.sql.gz" | wc -l)
+msg_success "Done. ${remaining} backup(s) in ${BACKUP_DIR}"
