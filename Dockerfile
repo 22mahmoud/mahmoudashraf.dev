@@ -41,7 +41,7 @@ ENV DJANGO_SETTINGS_MODULE=config.django.prod
 RUN SECRET_KEY=build-only-secret uv run python manage.py collectstatic --noinput --clear --verbosity 2
 
 FROM debian:bookworm-slim AS django
-LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
+LABEL org.opencontainers.image.source="https://github.com/mashrafdev/mahmoudashraf.dev"
 LABEL org.opencontainers.image.description="mahmoudashraf.dev Django application"
 
 WORKDIR /app
@@ -73,7 +73,7 @@ EXPOSE 8000
 ENTRYPOINT []
 
 FROM docker.io/nginx:1.29.5-alpine AS nginx
-LABEL org.opencontainers.image.source="https://github.com/22mahmoud/mahmoudashraf.dev"
+LABEL org.opencontainers.image.source="https://github.com/mashrafdev/mahmoudashraf.dev"
 LABEL org.opencontainers.image.description="mahmoudashraf.dev nginx reverse proxy"
 
 COPY --from=builder /app/staticfiles /usr/share/nginx/html/static

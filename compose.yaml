@@ -43,7 +43,7 @@ services:
       retries: 5
 
   static:
-    image: ghcr.io/22mahmoud/mahmoudashraf.dev-nginx:${IMAGE_TAG:?IMAGE_TAG is required}
+    image: ghcr.io/mashrafdev/mahmoudashraf.dev-nginx:${IMAGE_TAG:?IMAGE_TAG is required}
     networks:
       - caddy
     restart: unless-stopped
@@ -58,7 +58,7 @@ services:
       retries: 5
 
   django:
-    image: ghcr.io/22mahmoud/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
+    image: ghcr.io/mashrafdev/mahmoudashraf.dev:${IMAGE_TAG:?IMAGE_TAG is required}
     networks:
       - internal
       - caddy
@@ -76,12 +76,12 @@ services:
       caddy.reverse_proxy: "{{upstreams 8000}}"
 
       # Redirects
-      caddy.redir_0: "/yt https://www.youtube.com/@22mahmoud 301"
-      caddy.redir_1: "/youtube https://www.youtube.com/@22mahmoud 301"
-      caddy.redir_2: "/gh https://github.com/22mahmoud 301"
-      caddy.redir_3: "/github https://github.com/22mahmoud 301"
-      caddy.redir_4: "/in https://www.linkedin.com/in/22mahmoud 301"
-      caddy.redir_5: "/linkedin https://www.linkedin.com/in/22mahmoud 301"
+      caddy.redir_0: "/yt https://www.youtube.com/@mashrafdev 301"
+      caddy.redir_1: "/youtube https://www.youtube.com/@mashrafdev 301"
+      caddy.redir_2: "/gh https://github.com/mashrafdev 301"
+      caddy.redir_3: "/github https://github.com/mashrafdev 301"
+      caddy.redir_4: "/in https://www.linkedin.com/in/mashrafdev 301"
+      caddy.redir_5: "/linkedin https://www.linkedin.com/in/mashrafdev 301"
 
       # Proxy /js/script.js to goatcounter
       caddy.handle_0: "/js/script.js"
