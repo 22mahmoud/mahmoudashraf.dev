@@ -186,7 +186,7 @@ STORAGES = {
 
 SITE_ID = 1
 
-WEBMENTION_DOMAIN = "mahmoudashraf.dev"  # e.g., maw.sh
+WEBMENTION_DOMAIN = env.str("WEBMENTION_DOMAIN", "mahmoudashraf.dev")  # e.g., maw.sh
 WEBMENTION_TOKEN = env.str("WEBMENTION_TOKEN", "")
 LEGACY_SITE_DOMAIN = "maw.sh"
 
