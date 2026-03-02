@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          source: "compose.yaml,bin/db-backup,bin/db-restore"
+          source: "compose.yaml,bin/db-backup,bin/db-restore,bin/redis-flushall"
           target: ${{ secrets.VPS_APP_DIR }}/
 
       - name: Deploy to VPS
@@ -52,7 +52,6 @@ jobs:
             fi
 
             cd "${{ secrets.VPS_APP_DIR }}"
-            chmod +x bin/db-backup bin/db-restore
 
             IMAGE_TAG="sha-${{ github.event.workflow_run.head_sha }}"
             printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" > .env.deploy
