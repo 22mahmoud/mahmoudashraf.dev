@@ -38,7 +38,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "debugpy>=1.8.20,<2",
   "django-stubs-ext>=5.2.9,<6",
   "django-types>=0.23.0,<1",
   "djlint>=1.36.4,<2",

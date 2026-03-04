@@ -9,7 +9,7 @@ run = [{ tasks = ["django", "vite"] }]
 
 [tasks.django]
 description = "Run Django dev server with debugpy"
-run = "uv run python -m debugpy --listen 5678 manage.py runserver ${PORT:-8000}"
+run = "uv run python manage.py runserver ${PORT:-8000}"
 
 [tasks.vite]
 description = "Run Vite frontend dev server"
