@@ -254,6 +254,8 @@ WAGTAIL_ADMIN_PATH = env.str("WAGTAIL_ADMIN_PATH", "cms/")
 
 TMDB_API_KEY = env.str("TMDB_API_KEY", "")
 
+SILENCED_SYSTEM_CHECKS = ["wagtailadmin.W002"]
+
 # lib settings
 from config.settings.django_allauth import *  # noqa: E402, F403
 from config.settings.django_comments_xtd import *  # noqa: E402, F403
