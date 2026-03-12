@@ -1,10 +1,10 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-biome-base: &biome-base
+ox-base: &ox-base
   language: system
   types: [text]
-  files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|svelte|vue|astro|graphql|gql)$"
+  files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|svelte|vue|astro|graphql|gql|md|markdown|yaml|yml|toml)$"
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -43,15 +43,15 @@ repos:
 
   - repo: local
     hooks:
-      - id: local-biome-format
-        name: biome format
-        entry: pnpm exec biome format --write
-        <<: *biome-base
+      - id: local-oxfmt
+        name: oxfmt format
+        entry: pnpm exec oxfmt --write
+        <<: *ox-base
 
-      - id: local-biome-lint
-        name: biome lint
-        entry: pnpm exec biome lint --write
-        <<: *biome-base
+      - id: local-oxlint
+        name: oxlint check
+        entry: pnpm exec oxlint --fix
+        <<: *ox-base
 
       - id: local-tsc
         name: typescript type check

@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          source: "compose.yaml,bin/db-backup,bin/db-restore,bin/redis-flushall"
+          source: 'compose.yaml,bin/db-backup,bin/db-restore,bin/redis-flushall'
           target: ${{ secrets.VPS_APP_DIR }}/
 
       - name: Deploy to VPS

@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     logging: *default-logging
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,13 +31,13 @@ services:
       - .env
     networks:
       - internal
-    command: ["valkey-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    command: ['valkey-server', '--appendonly', 'yes', '--requirepass', '${REDIS_PASSWORD}']
     volumes:
       - redis_data:/data
     restart: unless-stopped
     logging: *default-logging
     healthcheck:
-      test: ["CMD", "valkey-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: ['CMD', 'valkey-cli', '-a', '${REDIS_PASSWORD}', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,7 +52,7 @@ services:
       - no-new-privileges:true
     logging: *default-logging
     healthcheck:
-      test: ["CMD-SHELL", "curl -s -I http://localhost/static/ > /dev/null || exit 1"]
+      test: ['CMD-SHELL', 'curl -s -I http://localhost/static/ > /dev/null || exit 1']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -62,7 +62,7 @@ services:
     networks:
       - internal
       - caddy
-    entrypoint: ["/app/bin/django-entrypoint.sh"]
+    entrypoint: ['/app/bin/django-entrypoint.sh']
     env_file:
       - .env
     init: true
@@ -73,30 +73,30 @@ services:
     logging: *default-logging
     labels:
       caddy: mahmoudashraf.dev
-      caddy.reverse_proxy: "{{upstreams 8000}}"
+      caddy.reverse_proxy: '{{upstreams 8000}}'
 
       # Redirects
-      caddy.redir_0: "/yt https://www.youtube.com/@mashrafdev 301"
-      caddy.redir_1: "/youtube https://www.youtube.com/@mashrafdev 301"
-      caddy.redir_2: "/gh https://github.com/mashrafdev 301"
-      caddy.redir_3: "/github https://github.com/mashrafdev 301"
-      caddy.redir_4: "/in https://www.linkedin.com/in/mashrafdev 301"
-      caddy.redir_5: "/linkedin https://www.linkedin.com/in/mashrafdev 301"
+      caddy.redir_0: '/yt https://www.youtube.com/@mashrafdev 301'
+      caddy.redir_1: '/youtube https://www.youtube.com/@mashrafdev 301'
+      caddy.redir_2: '/gh https://github.com/mashrafdev 301'
+      caddy.redir_3: '/github https://github.com/mashrafdev 301'
+      caddy.redir_4: '/in https://www.linkedin.com/in/mashrafdev 301'
+      caddy.redir_5: '/linkedin https://www.linkedin.com/in/mashrafdev 301'
 
       # Proxy /js/script.js to goatcounter
-      caddy.handle_0: "/js/script.js"
-      caddy.handle_0.rewrite: "/count.js"
-      caddy.handle_0.reverse_proxy: "goatcounter:8080"
-      caddy.handle_0.reverse_proxy.header_up: "Host stats.mahmoudashraf.dev"
+      caddy.handle_0: '/js/script.js'
+      caddy.handle_0.rewrite: '/count.js'
+      caddy.handle_0.reverse_proxy: 'goatcounter:8080'
+      caddy.handle_0.reverse_proxy.header_up: 'Host stats.mahmoudashraf.dev'
 
       # Proxy /count to goatcounter
-      caddy.handle_1: "/count"
-      caddy.handle_1.reverse_proxy: "goatcounter:8080"
-      caddy.handle_1.reverse_proxy.header_up: "Host stats.mahmoudashraf.dev"
+      caddy.handle_1: '/count'
+      caddy.handle_1.reverse_proxy: 'goatcounter:8080'
+      caddy.handle_1.reverse_proxy.header_up: 'Host stats.mahmoudashraf.dev'
 
       # Static Files
       caddy.handle_2: /static/*
-      caddy.handle_2.0_reverse_proxy: "static:80"
+      caddy.handle_2.0_reverse_proxy: 'static:80'
 
     depends_on:
       postgres:
@@ -104,7 +104,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "manage.py", "health_check", "health_check-container", "django:8000"]
+      test: ['CMD', 'python', 'manage.py', 'health_check', 'health_check-container', 'django:8000']
       interval: 60s
       timeout: 10s
       retries: 3

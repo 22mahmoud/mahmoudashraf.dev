@@ -6,13 +6,13 @@
 - [x] Setup Vite
 - [x] Home Page
 - [x] IndieWeb Post Types
-    - [x] Article (Blog Post)
-    - [x] Note (Thoughts)
-    - [x] Like
-    - [x] Reply
-    - [x] Bookmark
-    - [x] Photo
-    - [x] Video
+  - [x] Article (Blog Post)
+  - [x] Note (Thoughts)
+  - [x] Like
+  - [x] Reply
+  - [x] Bookmark
+  - [x] Photo
+  - [x] Video
 - [x] Search
 - [x] Webmentions
 - [x] Projects
@@ -20,11 +20,11 @@
 - [x] Comments
 - [x] Auth
 - [ ] Tracker
-    - [ ] Video Games
-    - [ ] Reading
-    - [ ] TV
-    - [ ] Movies
-    - [ ] Leetcode
+  - [ ] Video Games
+  - [ ] Reading
+  - [ ] TV
+  - [ ] Movies
+  - [ ] Leetcode
 - [x] About
 - [ ] Uses
 - [x] Contact

@@ -1,7 +1,7 @@
-@import "tailwindcss";
-@import "./fonts.css";
-@import "./utils.css";
-@import "./typography.css" layer(components);
+@import 'tailwindcss';
+@import './fonts.css';
+@import './utils.css';
+@import './typography.css' layer(components);
 
 .bg-sunset {
   @apply bg-gradient-to-r from-gradient-1 to-gradient-2;
@@ -12,11 +12,11 @@ body {
 }
 
 @theme {
-  --font-heading: "Outfit", sans-serif;
-  --font-sans: "Figtree", sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-sans: 'Figtree', sans-serif;
   --font-mono:
-    DepartureMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    DepartureMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
 
   --color-primary: #e0e0e0;
   --color-secondary: #9a9a9a;
@@ -72,7 +72,7 @@ body {
 }
 
 .zigzag::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-image: url(/icons/fill.png);

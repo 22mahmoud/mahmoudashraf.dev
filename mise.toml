@@ -60,9 +60,9 @@ description = "Run TypeScript type checks"
 run = "pnpm exec tsc --noEmit --pretty"
 
 [tasks.frontend-lint]
-description = "Run Biome lint"
-run = "pnpm exec biome lint --write"
+description = "Run oxlint checks"
+run = "pnpm exec oxlint --fix"
 
 [tasks.frontend-format]
-description = "Run Biome format"
-run = "pnpm exec biome format --write"
+description = "Run oxfmt formatter"
+run = "pnpm exec oxfmt --write"
