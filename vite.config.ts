@@ -16,9 +16,9 @@ export default defineConfig({
     outDir: path.resolve('./static'),
     copyPublicDir: false,
     emptyOutDir: true,
-    minify: 'terser',
-    cssMinify: 'esbuild',
-    rollupOptions: {
+    minify: 'oxc',
+    cssMinify: 'lightningcss',
+    rolldownOptions: {
       output: {
         manualChunks(id) {
           if (/node_modules\/(htmx\.org|alpinejs)\//.test(id)) {

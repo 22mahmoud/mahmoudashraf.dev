@@ -14,39 +14,39 @@
   height: 100vh;
 }
 
-@utilify ht-svw {
+@utility ht-svw {
   height: 100svw;
 }
 
-@utilify ht-lvw {
+@utility ht-lvw {
   height: 100lvw;
 }
 
-@utilify ht-dvw {
+@utility ht-dvw {
   height: 100dvw;
 }
 
-@utilify ht-svh {
+@utility ht-svh {
   height: 100svh;
 }
 
-@utilify ht-lvh {
+@utility ht-lvh {
   height: 100lvh;
 }
 
-@utilify ht-dvh {
+@utility ht-dvh {
   height: 100dvh;
 }
 
-@utilify ht-min {
+@utility ht-min {
   height: min-content;
 }
 
-@utilify ht-max {
+@utility ht-max {
   height: max-content;
 }
 
-@utilify ht-fit {
+@utility ht-fit {
   height: fit-content;
 }
 
