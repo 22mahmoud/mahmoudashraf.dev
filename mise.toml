@@ -1,4 +1,5 @@
 [tools]
+node = "24.14.0"
 uv = "0.10.0"
 
 [tasks.dev]
